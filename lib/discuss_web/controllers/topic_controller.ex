@@ -3,6 +3,11 @@ defmodule DiscussWeb.TopicController do
 
   alias Discuss.Topic
   alias Discuss.TopicData
+
+  plug DiscussWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+  plug :check_topic_owner when action in [:edit, :update, :delete]
+
+
   def index(conn, _params \\ %{}) do
     render(conn, "index.html", topics: TopicData.get_topics())
   end
@@ -13,7 +18,11 @@ defmodule DiscussWeb.TopicController do
   end
 
   def create(conn, %{"topic" => topic}) do
-    changeset = Topic.changeset(%Topic{}, topic)
+    # topic belongs to a user. Associating with the user before creating changeset
+    changeset =
+      conn.assigns.user
+      |> Topic.connect_topic_to_user()
+      |> Topic.changeset(topic)
     case TopicData.add_topic(changeset) do
       {:ok, _topic} ->
         conn
@@ -27,6 +36,10 @@ defmodule DiscussWeb.TopicController do
   end
 
   def edit(conn, %{"id" => topic_id}) do
+    IO.inspect("+++")
+    IO.inspect(conn)
+    IO.inspect("+++")
+
     topic = TopicData.get_topic(topic_id)
     render(conn, "edit.html", changeset: Topic.changeset(topic), topic: topic)
   end
@@ -56,5 +69,17 @@ defmodule DiscussWeb.TopicController do
     conn
     |> put_flash(:info, "Topic Deleted")
     |> redirect(to: Routes.topic_path(conn, :index))
+  end
+  
+  defp check_topic_owner(conn, _params) do
+    %{params: %{"id" => topic_id}} = conn
+    if conn.assigns.user.id == TopicData.get_topic!(topic_id).user_id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "You cannot edit or delete this topic")
+      |> redirect(to: Routes.topic_path(conn, :index))
+      |> halt()
+    end
   end
 end

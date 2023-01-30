@@ -6,7 +6,7 @@ defmodule DiscussWeb.AuthController do
   
   plug Ueberauth
 
-  alias Ueberauth.Strategy.Helpers
+  alias DiscussWeb.Router.Helpers
   alias UeberauthExample.UserFromAuth
 
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, params) do

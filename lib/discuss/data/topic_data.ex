@@ -24,4 +24,5 @@ defmodule Discuss.TopicData do
   def delete_topic!(changeset) do
     Repo.delete!(changeset)
   end
+
 end
