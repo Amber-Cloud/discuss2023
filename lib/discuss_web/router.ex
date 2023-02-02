@@ -1,5 +1,6 @@
 defmodule DiscussWeb.Router do
   use DiscussWeb, :router
+  use Plug.Debugger, otp_app: :discuss
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -18,8 +19,8 @@ defmodule DiscussWeb.Router do
 
   scope "/", DiscussWeb do
     pipe_through :browser
-
-    resources "/", TopicController
+    get "/", TopicController, :index
+    resources "/topics", TopicController
   end
 
   scope "/auth", DiscussWeb do

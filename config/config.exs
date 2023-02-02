@@ -62,6 +62,8 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
        client_id: System.get_env("GOOGLE_CLIENT_ID"),
        client_secret: System.get_env("GOOGLE_CLIENT_SECRET")
 
+config :discuss, :path_to_identicon, "#{System.get_env("DISCUSS_PROJECT_DIRECTORY")}/priv/static/images"
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

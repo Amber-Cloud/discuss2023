@@ -1,9 +1,10 @@
 defmodule Discuss.TopicData do
   alias Discuss.Repo
   alias Discuss.Topic
+  import Ecto.Query, only: [from: 2]
 
   def get_topics() do
-    Repo.all(Topic)
+    Repo.all(from(topic in Topic, order_by: [desc: topic.inserted_at]))
   end
 
   def get_topic(topic_id) do

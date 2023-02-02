@@ -55,6 +55,7 @@
       <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/ueberauth" />
       <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/ueberauth_github" />
       <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/ueberauth_google" />
+      <excludeFolder url="file://$MODULE_DIR$/_build/dev/lib/egd" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="phoenix" level="project" />
@@ -122,5 +123,6 @@
     <orderEntry type="library" name="inch_ex" level="project" />
     <orderEntry type="library" name="oauth2" level="project" />
     <orderEntry type="library" name="mock" level="project" />
+    <orderEntry type="library" name="egd" level="project" />
   </component>
 </module>

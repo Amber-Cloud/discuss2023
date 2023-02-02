@@ -14,7 +14,27 @@
     position: relative;
     margin-bottom: 25px;
 }
+.topic-body {
+    font-size: 0.8em;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
 
+.secondary-content {
+    font-size: 15px;
+}
+
+.comment-item {
+    margin-top: -10px;
+}
+
+.topic-image {
+   width: 30px
+}
+
+.topic-title {
+    display: inline-block;
+}
 
 
 /* Alerts and form errors used by phx.new */

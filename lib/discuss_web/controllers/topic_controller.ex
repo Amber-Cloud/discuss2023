@@ -5,11 +5,18 @@ defmodule DiscussWeb.TopicController do
   alias Discuss.TopicData
 
   plug DiscussWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
+  plug :check_topic_exists when action in [:show, :edit, :update, :delete]
   plug :check_topic_owner when action in [:edit, :update, :delete]
 
 
   def index(conn, _params \\ %{}) do
     render(conn, "index.html", topics: TopicData.get_topics())
+  end
+
+  def show(conn, %{"id" => topic_id}) do
+    topic = TopicData.get_topic(topic_id)
+    identicon = "/images/" <> (topic.identicon |> Path.basename() || "no-file.png")
+    render(conn, "show.html", topic: topic, identicon: identicon)
   end
 
   def new(conn, _params) do
@@ -23,6 +30,7 @@ defmodule DiscussWeb.TopicController do
       conn.assigns.user
       |> Topic.connect_topic_to_user()
       |> Topic.changeset(topic)
+      |> Topic.add_identicon(topic)
     case TopicData.add_topic(changeset) do
       {:ok, _topic} ->
         conn
@@ -36,18 +44,15 @@ defmodule DiscussWeb.TopicController do
   end
 
   def edit(conn, %{"id" => topic_id}) do
-    IO.inspect("+++")
-    IO.inspect(conn)
-    IO.inspect("+++")
-
     topic = TopicData.get_topic(topic_id)
     render(conn, "edit.html", changeset: Topic.changeset(topic), topic: topic)
   end
 
   def update(conn, %{"id" => topic_id, "topic" => topic}) do
     old_topic = TopicData.get_topic(topic_id)
-    changeset = Topic.changeset(old_topic, topic)
-
+    changeset =
+      Topic.changeset(old_topic, topic)
+      |> Topic.add_identicon(topic)
     case TopicData.update_topic(changeset) do
       {:ok, _topic} ->
         conn
@@ -78,6 +83,18 @@ defmodule DiscussWeb.TopicController do
     else
       conn
       |> put_flash(:error, "You cannot edit or delete this topic")
+      |> redirect(to: Routes.topic_path(conn, :index))
+      |> halt()
+    end
+  end
+
+  defp check_topic_exists(conn, _params) do
+    %{params: %{"id" => topic_id}} = conn
+    if TopicData.get_topic(topic_id) do
+      conn
+    else
+      conn
+      |> put_flash(:error, "This topic doesn't exist")
       |> redirect(to: Routes.topic_path(conn, :index))
       |> halt()
     end

@@ -3,5 +3,13 @@
         <%= text_input(form_object, :title, placeholder: "Title", class: "form-control") %>
         <%= error_tag(form_object, :title) %>
     </div>
+    <div class="form-group">
+        <div class="input-field col s12" >
+            <i class="material-icons prefix">mode_edit</i>
+            <%= textarea(form_object, :body, placeholder: "What would you like to discuss?", class: "materialize-textarea") %>
+            <%= error_tag(form_object, :body) %>
+        </div>
+    </div>
+
     <%= submit "Save Topic", class: "btn btn-primary btn-submit" %>
 <% end %>
