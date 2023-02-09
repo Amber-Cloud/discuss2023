@@ -1,6 +1,5 @@
 defmodule Discuss.UserData do
-  alias Discuss.Repo
-  alias Discuss.User
+  alias Discuss.{Repo, User}
 
 
   def get_user_by_email(user_email) do

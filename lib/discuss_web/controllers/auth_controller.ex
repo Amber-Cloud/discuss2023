@@ -1,15 +1,11 @@
 defmodule DiscussWeb.AuthController do
   use DiscussWeb, :controller
 
-  alias Discuss.User
-  alias Discuss.UserData
-  
+  alias Discuss.{User, UserData}
+
   plug Ueberauth
 
-  alias DiscussWeb.Router.Helpers
-  alias UeberauthExample.UserFromAuth
-
-  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, params) do
+  def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     user_params = %{token: auth.credentials.token, email: auth.info.email, provider: Atom.to_string(auth.provider)}
     changeset = User.changeset(%User{}, user_params)
     sign_in(conn, changeset)

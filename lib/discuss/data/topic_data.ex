@@ -1,6 +1,5 @@
 defmodule Discuss.TopicData do
-  alias Discuss.Repo
-  alias Discuss.Topic
+  alias Discuss.{Repo, Topic}
   import Ecto.Query, only: [from: 2]
 
   def get_topics() do
@@ -12,6 +11,10 @@ defmodule Discuss.TopicData do
   end
   def get_topic!(topic_id) do
     Repo.get!(Topic, topic_id)
+  end
+
+  def get_topic_user(topic) do
+    Repo.preload(topic, [:user])
   end
 
   def add_topic(changeset) do

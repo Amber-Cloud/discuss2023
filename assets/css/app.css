@@ -34,6 +34,19 @@
 
 .topic-title {
     display: inline-block;
+    color: black;
+}
+
+.topic-edit {
+    font-size: 20px;
+    border-radius: 4px;
+    color: #31708f;
+}
+
+.topic-delete {
+    font-size: 20px;
+    border-radius: 4px;
+    color: #a94442;
 }
 
 

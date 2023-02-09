@@ -2,7 +2,6 @@ defmodule DiscussWeb.Plugs.RequireAuth do
   import Plug.Conn
   import Phoenix.Controller
   alias DiscussWeb.Router.Helpers , as: Routes
-  alias Discuss.UserData
 
   def init(_params) do
   end

@@ -1,8 +1,7 @@
 defmodule DiscussWeb.TopicController do
   use DiscussWeb, :controller
 
-  alias Discuss.Topic
-  alias Discuss.TopicData
+  alias Discuss.{Topic, TopicData}
 
   plug DiscussWeb.Plugs.RequireAuth when action in [:new, :create, :edit, :update, :delete]
   plug :check_topic_exists when action in [:show, :edit, :update, :delete]
@@ -14,9 +13,12 @@ defmodule DiscussWeb.TopicController do
   end
 
   def show(conn, %{"id" => topic_id}) do
-    topic = TopicData.get_topic(topic_id)
+    topic =
+      topic_id
+      |> TopicData.get_topic()
+      |> TopicData.get_topic_user()
     identicon = "/images/" <> (topic.identicon |> Path.basename() || "no-file.png")
-    render(conn, "show.html", topic: topic, identicon: identicon)
+    render(conn, "show.html", topic: topic, user_id: conn.assigns.user.id, identicon: identicon)
   end
 
   def new(conn, _params) do
@@ -64,7 +66,7 @@ defmodule DiscussWeb.TopicController do
         |> render("new.html", changeset: changeset, topic: old_topic)
     end
   end
-  
+
   def delete(conn, %{"id" => topic_id}) do
     topic_id
     |> TopicData.get_topic!()
@@ -75,7 +77,7 @@ defmodule DiscussWeb.TopicController do
     |> put_flash(:info, "Topic Deleted")
     |> redirect(to: Routes.topic_path(conn, :index))
   end
-  
+
   defp check_topic_owner(conn, _params) do
     %{params: %{"id" => topic_id}} = conn
     if conn.assigns.user.id == TopicData.get_topic!(topic_id).user_id do

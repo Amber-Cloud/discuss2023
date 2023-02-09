@@ -1,6 +1,33 @@
 <h4>
     <img class="topic-image" src={Routes.static_path(@conn, @identicon)} />
     <%= @topic.title %>
+    <%= if @conn.assigns.user.id == @topic.user_id do %>
+    <div class="right">
+        <%= link("Edit", to: Routes.topic_path(@conn, :edit, @topic), class: "topic-edit") %>
+        <%= link("Delete", to: Routes.topic_path(@conn, :delete, @topic), class: "topic-delete", method: :delete) %>
+    </div>
+    <% end %>
 </h4>
 
 <p class="topic-body"><%= @topic.body %></p>
+<div class = "secondary-content" >
+    <%= if @topic.user, do: @topic.user.email, else: "Anonymous" %>
+    <br>Created <%= "#{@topic.inserted_at.day}.#{@topic.inserted_at.month}.#{@topic.inserted_at.year} #{@topic.inserted_at.hour}:#{@topic.inserted_at.minute}"%>
+</div>
+
+<div class ="input-field">
+    <textarea class = "materialize-textarea"></textarea>
+    <button class = "btn">Add Comment</button>
+</div>
+
+<div>
+<!--    comments coming from js are rendered here-->
+    <ul class = "collection">
+    </ul>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        window.createSocket(<%= @topic.id %>)
+    });
+</script>
