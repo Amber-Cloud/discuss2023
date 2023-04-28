@@ -8,7 +8,7 @@ defmodule Discuss.Topic do
     field :body, :string
     field :identicon, :string
     belongs_to :user, Discuss.User
-    has_many :comments, Discuss.Comment
+    has_many :comments, Discuss.Comment, on_delete: :delete_all
 
     timestamps()
 
