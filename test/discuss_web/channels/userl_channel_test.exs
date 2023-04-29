@@ -7,7 +7,7 @@ defmodule DiscussWeb.UserChannelTest do
     {:ok, user} = %User{email: "hello@gmail.com"} |> Repo.insert()
     token = Phoenix.Token.sign(DiscussWeb.Endpoint, "key", user.id)
 
-    assert {:ok, socket} = connect(UserSocket, %{"token" => token})
+    assert {:ok, _socket} = connect(UserSocket, %{"token" => token})
     assert :error = connect(UserSocket, %{"token" => "invalid data"})
   end
 end

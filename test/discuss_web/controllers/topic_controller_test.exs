@@ -59,7 +59,7 @@ defmodule DiscussWeb.TopicControllerTest do
       refute html_response(conn, 200) =~ "Edit"
     end
 
-    test "Unauthorised user cannot see 'delete, edit and add topic' buttons", %{conn: conn, user1: user1} do
+    test "Unauthorised user cannot see 'delete, edit and add topic' buttons", %{conn: conn} do
       conn = get(conn, "/")
       assert html_response(conn, 200) =~ "A new topic"
       refute html_response(conn, 200) =~ "Delete"

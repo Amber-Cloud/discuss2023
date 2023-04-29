@@ -30,6 +30,7 @@ defmodule DiscussWeb.CommentsChannelTest do
   test "handle_in handles valid and invalid content properly", %{socket: socket, topic_id: topic_id, user: user} do
     {:ok, _, socket} = subscribe_and_join(socket, CommentsChannel, "comments:#{topic_id}")
     valid_comment = %Comment{content: "A valid comment", user: user, topic_id: topic_id}
+    valid_comment_content = valid_comment.content
     invalid_comment = %Comment{content: "a", user: user, topic_id: topic_id}
     user_id = user.id
 
@@ -46,7 +47,7 @@ defmodule DiscussWeb.CommentsChannelTest do
     assert %Comment{content: "A valid comment", user_id: ^user_id, topic_id: topic_id} = comment_in_db
 
     event = "comments:#{topic_id}:new"
-    assert_broadcast(^event, %{comment: valid_comment})
+    assert_broadcast(^event, %{comment: %{content: ^valid_comment_content}})
 
   end
 

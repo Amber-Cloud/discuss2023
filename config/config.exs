@@ -64,6 +64,9 @@ config :ueberauth, Ueberauth.Strategy.Google.OAuth,
 
 config :discuss, :path_to_identicon, "#{System.get_env("DISCUSS_PROJECT_DIRECTORY")}/priv/static/images"
 
+config :discuss, :path_to_project, System.get_env("DISCUSS_PROJECT_DIRECTORY")
+
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

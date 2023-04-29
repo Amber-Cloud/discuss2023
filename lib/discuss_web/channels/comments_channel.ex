@@ -16,7 +16,6 @@ defmodule DiscussWeb.CommentsChannel do
   # by sending replies to requests from the client
   @impl true
   def handle_in("comment:add", %{"content" => content}, socket) do
-    IO.inspect(socket.assigns)
     changeset =
       socket.assigns.topic
       |> Comment.connect_comment_to_topic(socket.assigns.user_id)
